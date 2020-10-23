@@ -1,18 +1,22 @@
 package com.ghost.engine;
 
+import java.awt.event.KeyEvent;
+
 public class Basics implements Runnable
 {
 	public Thread mainThread;
 	public Window window;
+	public Drawing draw;
+	public Input input;
 	
 	public boolean isRunning = false;
 	private final double FRAME_RATE = 1.0/60.0;
 	private int width = 320;
 	private int height = 240;
-	private double scale = 1.0;
+	private int scale = 1;
 	private String title = "Ghost Engine Test";
 	
-	
+	//getters
 	public int getWidth() {
 		return width;
 	}
@@ -34,8 +38,11 @@ public class Basics implements Runnable
 	public double getScale() {
 		return scale;
 	}
-	public void setScale(double scale) {
+	public void setScale(int scale) {
 		this.scale = scale;
+	}
+	public Window getWindow() {
+		return window;
 	}
 	
 	//starting the engine code
@@ -46,6 +53,8 @@ public class Basics implements Runnable
 	public void start()
 	{
 		window = new Window(this);
+		draw = new Drawing(this);
+		input = new Input(this);
 		mainThread = new Thread(this);
 		mainThread.run(); //.run will run as main thread
 	}
@@ -74,11 +83,12 @@ public class Basics implements Runnable
 			{
 				unChecked -= FRAME_RATE;
 				render = true;
-				//update the game
-//				System.out.println(startTime + " " + endTime + " " + passedTime);
+				//System.out.println(startTime + " " + endTime + " " + passedTime);
+				this.gameLoop();
 			}
 			if(render)
 			{
+				draw.clear();
 				window.update();
 				render = false;
 			}
@@ -98,12 +108,23 @@ public class Basics implements Runnable
 	}
 	public void gameLoop()
 	{
+		while(input.isKeyBoardActive)
+		{
+			if(input.isKey(KeyEvent.VK_UP))
+			{
+				System.out.println("up is pressed");
+			}
+			else if(input.isKey(KeyEvent.VK_DOWN))
+			{
+				System.out.println("down is pressed");
+			}
+		}
 		
 	}
 	
 	public static void main(String args[])
 	{
-		Basics game = new Basics();
-		game.start();
+		Basics ghost = new Basics();
+		ghost.start();
 	}
 }

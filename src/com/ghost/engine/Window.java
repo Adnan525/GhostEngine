@@ -23,7 +23,7 @@ public class Window
 		image = new BufferedImage(bas.getWidth(), bas.getHeight(), BufferedImage.TYPE_INT_RGB);
 		
 		canvas = new Canvas();
-		Dimension canvasSize = new Dimension(bas.getWidth(), bas.getHeight());
+		Dimension canvasSize = new Dimension((int)(bas.getWidth()*bas.getScale()), (int)(bas.getHeight()*bas.getScale()));
 		canvas.setPreferredSize(canvasSize);
 		
 		frame = new JFrame(bas.getTitle());
@@ -42,5 +42,13 @@ public class Window
 	{
 		graphics.drawImage(image, 0, 0, canvas.getWidth(), canvas.getHeight(), null);
 		strategy.show();
+	}
+
+	public BufferedImage getImage() {
+		return image;
+	}
+
+	public Canvas getCanvas() {
+		return canvas;
 	}
 }
